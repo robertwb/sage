@@ -1704,3 +1704,6 @@ cdef class RealNumber(element.RingElement):
         mpfr_zeta(x.value, self.value, self._parent.rnd)
         _sig_off
         return x
+
+
+RR = RealField()
