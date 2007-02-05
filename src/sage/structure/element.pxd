@@ -96,6 +96,8 @@ cdef class FiniteFieldElement(FieldElement):
 cdef class AlgebraElement(RingElement):
     pass
 
+cdef class CommutativeAlgebraElement(CommutativeRingElement):
+    pass
 
 cdef class CommutativeAlgebra(AlgebraElement):
     pass
@@ -111,7 +113,7 @@ cdef class Vector(ModuleElement):
     cdef Vector _vector_times_vector_c_impl(Vector left, Vector right)  # OK to override, but do *NOT* call directly
 
 
-cdef class Matrix(ModuleElement):
+cdef class Matrix(AlgebraElement):
     cdef Py_ssize_t _nrows
     cdef Py_ssize_t _ncols
 
