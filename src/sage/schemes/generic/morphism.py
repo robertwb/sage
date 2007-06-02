@@ -375,7 +375,6 @@ class SchemeMorphism_projective_coordinates_field(SchemeMorphism_projective_coor
 
         self._coords = v
 
-
 class SchemeMorphism_abelian_variety_coordinates_field(AdditiveGroupElement, SchemeMorphism_projective_coordinates_field):
     def __mul__(self, n):
         if isinstance(n, (RingElement, int, long)):
