@@ -39,3 +39,6 @@ cdef class RightModuleAction(Action):
     cdef Morphism connecting
     cdef extended_base
     cdef bint is_inplace
+
+cdef class PyScalarAction(Action):
+    cdef Action _action
