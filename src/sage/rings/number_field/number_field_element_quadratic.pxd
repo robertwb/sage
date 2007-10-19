@@ -14,3 +14,7 @@ cdef class NumberFieldElement_quadratic(NumberFieldElement_absolute):
     cdef Integer disc
     cdef NumberFieldElement conjugate_c(self)
     cdef bint is_sqrt_disc(self)
+
+
+cdef class OrderElement_quadratic(NumberFieldElement_quadratic):
+    pass
