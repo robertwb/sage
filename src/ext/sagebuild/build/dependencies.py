@@ -84,6 +84,7 @@ def create_dep_dict(flist, funcdict, includedict, cwd):
                 newfilename = os.path.normpath(r)
                 newfiles.append(newfilename)
             newlist = newfiles
+            newlist.append(x)
         except:
             newlist = [x]
         dict[x] = newlist
@@ -96,7 +97,8 @@ def recurse_files(flist, depdict):
     fset = set(flist)
     outset = set()
     for x in fset:
-        outset.update(depdict[x])
+        deps = depdict[x]
+        outset.update(deps)
     if fset==outset:
         return fset
     else:
