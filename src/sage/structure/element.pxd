@@ -124,3 +124,6 @@ cdef class Matrix(AlgebraElement):
 cdef class CoercionModel:
     cpdef canonical_coercion(self, x, y)
     cpdef bin_op(self, x, y, op)
+
+
+cdef generic_power_c(a, nn, one)
