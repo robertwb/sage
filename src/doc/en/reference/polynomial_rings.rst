@@ -12,6 +12,9 @@ Polynomial Rings
 
    polynomial_rings_multivar
 
+   sage/rings/polynomial/laurent_polynomial_ring
+   sage/rings/polynomial/laurent_polynomial
+
    sage/rings/polynomial/pbori
 
    sage/rings/polynomial/symmetric_ideal
@@ -26,3 +29,4 @@ Polynomial Rings
 
 
    sage/rings/polynomial/convolution
+   sage/rings/polynomial/cyclotomic
