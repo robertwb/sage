@@ -193,9 +193,7 @@ class FreeMonoid_class(Monoid_class):
 
         INPUT:
 
-
         -  ``i`` - integer (default: 0)
-
 
         EXAMPLES::
 
@@ -225,3 +223,16 @@ class FreeMonoid_class(Monoid_class):
             2005
         """
         return self.__ngens
+
+
+    def one_element(self):
+        """
+        Returns the identity element in this monoid.
+
+        EXAMPLES::
+
+            sage: F = FreeMonoid(2005, 'a')
+            sage: F.one_element()
+            1
+        """
+        return self(1)
