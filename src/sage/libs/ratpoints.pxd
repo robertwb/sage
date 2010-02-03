@@ -1,5 +1,6 @@
 include '../ext/cdefs.pxi'
 include '../ext/stdsage.pxi'
+include '../ext/interrupt.pxi'
 from sage.rings.integer cimport Integer
 
 cdef extern from "ratpoints.h":
@@ -68,4 +69,4 @@ ctypedef struct point_list:
 ctypedef struct info_struct_exists_only:
     int verbose
 
-cdef bint ratpoints_mpz_exists_only(mpz_t *, long, int, bint)
+cdef int ratpoints_mpz_exists_only(mpz_t *, long, int, bint) except -1
