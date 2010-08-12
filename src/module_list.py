@@ -1628,6 +1628,13 @@ if is_package_installed('cbc'):
                       libraries = ["csage", "stdc++", "Cbc", "CbcSolver", "Cgl", "Clp", "CoinUtils", "OsiCbc", "OsiClp", "Osi", "OsiVol", "Vol"])
             )
 
+if is_package_installed('mpc'):
+    ext_modules.append(
+        Extension('sage.rings.complex_mpc',
+                  sources = ['sage/rings/complex_mpc.pyx'],
+                  libraries = ['mpc', 'mpfr', 'gmp'])
+        )
+
 
 
 # Only include darwin_utilities on OS_X >= 10.5
