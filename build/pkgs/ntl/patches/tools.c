@@ -1,10 +1,20 @@
 #include <NTL/tools.h>
 
 #include <ctype.h>
+#include <stdio.h>
 
 #include <NTL/new.h>
 
+
+void _ntl_abort_cxx_callback(void)
+{
+   if (NTL_NNS ErrorCallback) (*NTL_NNS ErrorCallback)();
+}
+
+
 NTL_START_IMPL
+
+void (*ErrorCallback)() = 0;
 
 
 /*
@@ -37,7 +47,7 @@ void Error(const char *s)
       ErrorCallbackFunction(s, ErrorCallbackContext);
 
    cerr << s << "\n";
-   abort();
+   _ntl_abort();
 }
 
 
@@ -133,6 +143,12 @@ long SkipWhiteSpace(istream& s)
    else
       return 1;
 }
+
+long IsEOFChar(long c)
+{
+   return c == EOF;
+}
+
 
 
 void PrintTime(ostream& s, double t)
