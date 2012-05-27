@@ -8,10 +8,6 @@
 
 cimport sage.structure.category_object
 
-cdef class AttributeErrorMessage:
-    cdef type cls
-    cdef str name
-
 cdef class Parent(category_object.CategoryObject):
 
     cdef public _element_constructor
@@ -90,3 +86,5 @@ cdef class Parent(category_object.CategoryObject):
     cdef _convert_from_hash
     # An optional single Morphism that describes a canonical coercion out of self
     cdef _embedding
+
+cpdef Parent Set_PythonType(theType)
