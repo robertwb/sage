@@ -130,5 +130,5 @@ def convert(Nstart, Nstop, recompute=False):
         print N
         try:
             newforms(N, recompute=recompute)
-        except:
+        except StandardError:
             print "Error for N=",N
