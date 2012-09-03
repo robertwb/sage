@@ -11,3 +11,7 @@ from sage.libs.mwrank.all  import (mwrank_EllipticCurve, mwrank_MordellWeil,
 import symmetrica.all as symmetrica
 
 from cremona.all import CremonaModularSymbols
+
+
+from sage.misc.lazy_import import lazy_import
+lazy_import('sage.libs.gap.libgap', 'libgap')
