@@ -463,7 +463,7 @@ class MatrixGroupElement(element.MultiplicativeGroupElement):
 
     def conjugacy_class(self):
         r"""
-        Returns the conjugacy class of ``self``
+        Return the conjugacy class of ``self``.
 
         EXAMPLES::
 
