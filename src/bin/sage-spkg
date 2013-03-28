@@ -230,7 +230,11 @@ elif [ -z "$PKG_HAS_PATH" ]; then
     LOCAL_PKG_VER=`cat $PKG_SCRIPTS/package-version.txt`
     if [ -z "$PKG_VER" -o "$PKG_VER" == "$LOCAL_PKG_VER" ]; then
         PKG_VER="$LOCAL_PKG_VER"
-        PKG_NAME="${PKG_BASE}-${PKG_VER}"
+        if [ -z "$PKG_VER" ]; then
+            PKG_NAME="${PKG_BASE}"
+        else
+            PKG_NAME="${PKG_BASE}-${PKG_VER}"
+        fi
         USE_LOCAL_SCRIPTS=yes
         PKG_NAME_UPSTREAM="${PKG_BASE}-`echo $PKG_VER | sed 's/\.p[0-9][0-9]*$//'`"
         echo "Using local scripts to install $PKG_NAME"
@@ -285,40 +289,45 @@ if [ ! -f "$PKG_SRC" ]; then
     if [ -n "$PKG_HAS_PATH" ]; then
         PKG_URL="$PKG_SRC"
     else
-        # Handle cases 2a and 3, where the package name is something
-        # like "foo" or "foo-1.2.3".
-        URL_BASE="${SAGE_SERVER}packages"
-        for repo in optional experimental standard archive; do
-            # Download the list of packages.
-            echo ">>> Checking online list of $repo packages."
-            repolist="${repo}.list"
-            sage-download-file "$URL_BASE/$repo/list" >$repolist
-            if [ $? -ne 0 ]; then
-                echo >&2 "Error: failed to download $URL_BASE/$repo/list, aborting"
-                rm -f $repolist
-                exit 1
-            fi
-
-            # The contrived sed commands print out either ${PKG_NAME} if
-            # it appears as a complete line or some string starting with
-            # ${PKG_NAME}- whichever occurs first.
-            # Tested with GNU sed, BSD sed (on OS X) and Solaris sed.
-            pkg=`sed -n -f <( echo "/^${PKG_NAME}\$/{p;q;}" && echo "/^${PKG_NAME}-/{p;q;}" ) $repolist`
-            rm -f $repolist
-            if [ -n "$pkg" ]; then
-                echo ">>> Found $pkg"
-                PKG_NAME=$pkg
-                # If INFO is set, try downloading only the .txt file
-                if [ $INFO -eq 1 ]; then
-                    PKG_URL="$URL_BASE/$repo/$pkg.txt"
-                    sage-download-file 2>/dev/null "$PKG_URL" && exit 0
-                    # If the download failed (for whatever reason),
-                    # fall through and use the .spkg file.
+        if [ "$USE_LOCAL_SCRIPTS" == yes ]; then
+            PKG_URL="$SAGE_UPSTREAM$PKG_NAME_UPSTREAM.tar.bz2"
+            echo $PKG_URL
+        else
+            # Handle cases 2a and 3, where the package name is something
+            # like "foo" or "foo-1.2.3".
+            URL_BASE="${SAGE_SERVER}packages"
+            for repo in optional experimental standard archive; do
+                # Download the list of packages.
+                echo ">>> Checking online list of $repo packages."
+                repolist="${repo}.list"
+                sage-download-file "$URL_BASE/$repo/list" >$repolist
+                if [ $? -ne 0 ]; then
+                    echo >&2 "Error: failed to download $URL_BASE/$repo/list, aborting"
+                    rm -f $repolist
+                    exit 1
                 fi
-                PKG_URL="$URL_BASE/$repo/$pkg.spkg"
-                break
-            fi
-        done
+
+                # The contrived sed commands print out either ${PKG_NAME} if
+                # it appears as a complete line or some string starting with
+                # ${PKG_NAME}- whichever occurs first.
+                # Tested with GNU sed, BSD sed (on OS X) and Solaris sed.
+                pkg=`sed -n -f <( echo "/^${PKG_NAME}\$/{p;q;}" && echo "/^${PKG_NAME}-/{p;q;}" ) $repolist`
+                rm -f $repolist
+                if [ -n "$pkg" ]; then
+                    echo ">>> Found $pkg"
+                    PKG_NAME=$pkg
+                    # If INFO is set, try downloading only the .txt file
+                    if [ $INFO -eq 1 ]; then
+                        PKG_URL="$URL_BASE/$repo/$pkg.txt"
+                        sage-download-file 2>/dev/null "$PKG_URL" && exit 0
+                        # If the download failed (for whatever reason),
+                        # fall through and use the .spkg file.
+                    fi
+                    PKG_URL="$URL_BASE/$repo/$pkg.spkg"
+                    break
+                fi
+            done
+        fi
         if [ -z "$PKG_URL" ]; then
             echo >&2 "Error: could not find a package matching $PKG_NAME in $URL_BASE"
             exit 1
@@ -346,7 +355,11 @@ if [ ! -f "$PKG_SRC" ]; then
         exit 1
     fi
 
-    PKG_SRC="`pwd`/$PKG_NAME.spkg"
+    if [ "$USE_LOCAL_SCRIPTS" == yes ]; then
+      PKG_SRC="`pwd`/$PKG_NAME.tar.bz2"
+    else
+      PKG_SRC="`pwd`/$PKG_NAME.spkg"
+    fi
     mv -f "$PKG_TMP" "$PKG_SRC"
 fi
 
