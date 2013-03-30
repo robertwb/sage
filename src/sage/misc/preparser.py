@@ -1051,6 +1051,11 @@ def preparse(line, reset=True, do_time=False, ignore_prompts=False,
 
         sage: preparse("time R.<x> = ZZ[]", do_time=True)
         '__time__=misc.cputime(); __wall__=misc.walltime(); R = ZZ[\'x\']; print "Time: CPU %.2f s, Wall: %.2f s"%(misc.cputime(__time__), misc.walltime(__wall__)); (x,) = R._first_ngens(1)'
+
+        sage: preparse('G.0')
+        'G.gen(0)'
+        sage: preparse('G.0.1')
+        'G.gen(0).gen(1)'
     """
     global quote_state
     if reset:
@@ -1093,7 +1098,11 @@ def preparse(line, reset=True, do_time=False, ignore_prompts=False,
 
     # Generators
     # R.0 -> R.gen(0)
-    L = re.sub(r'([_a-zA-Z]\w*|[)\]])\.(\d+)', r'\1.gen(\2)', L)
+    while True:
+        original = L
+        L = re.sub(r'([_a-zA-Z]\w*|[)\]])\.(\d+)', r'\1.gen(\2)', L)
+        if original == L:
+            break
 
     # Use ^ for exponentiation and ^^ for xor
     # (A side effect is that **** becomes xor as well.)

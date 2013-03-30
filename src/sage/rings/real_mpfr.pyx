@@ -5119,6 +5119,99 @@ cdef class RealLiteral(RealNumber):
         else:
             return RealLiteral(self._parent, '-'+self.literal, self.base)
 
+    def gen(self, index):
+        """
+        Leverage preparser for version number literals.
+
+        EXAMPLES::
+
+            sage: preparse("1.3.7.3.2")
+            "RealNumber('1.3').gen(7).gen(3).gen(2)"
+            sage: 1.3.7.3.2
+            1.3.7.3.2
+        """
+        return VersionNumber("%s.%s" % (self.literal, index))
+
+    def __getattr__(self, name):
+        """
+        Support for version number literals.
+
+        EXAMPLES::
+
+            sage: 5.9.beta0
+            5.9.beta0
+        """
+        return VersionNumber(self.literal + '.' + name)
+
+
+cdef class VersionNumber:
+    """
+    A literal version number.
+
+    EXAMPLES::
+
+        sage: 2.8.7.alpha0
+        2.8.7.alpha0
+        sage: type(2.8.7.alpha0)
+        <type 'sage.rings.real_mpfr.VersionNumber'>
+    """
+    cdef readonly literal
+
+    def __init__(self, literal):
+        """
+        Construct a literal version number.
+
+        EXAMPLES::
+
+            sage: sage.rings.real_mpfr.VersionNumber("abc")
+            abc
+            sage: sage.rings.real_mpfr.VersionNumber("abc").xyz
+            abc.xyz
+        """
+        self.literal = literal
+
+    def gen(self, index):
+        """
+        Used for constructing literal version numbers.
+
+        EXAMPLES::
+
+            sage: sage.rings.real_mpfr.VersionNumber("abc").gen(0)
+            abc.0
+            sage: sage.rings.real_mpfr.VersionNumber("abc").0
+            abc.0
+        """
+        return VersionNumber("%s.%s" % (self.literal, index))
+
+    def __getattr__(self, name):
+        """
+        Used for constructing literal version numbers.
+
+        EXAMPLES::
+
+            sage: sage.rings.real_mpfr.VersionNumber("abc").xyz
+            abc.xyz
+        """
+        return VersionNumber(self.literal + '.' + name)
+
+    def __repr__(self):
+        """
+        TESTS::
+
+            sage: repr(sage.rings.real_mpfr.VersionNumber("abc"))
+            'abc'
+        """
+        return self.literal
+
+    def __str__(self):
+        """
+        TESTS::
+
+            sage: str(sage.rings.real_mpfr.VersionNumber("abc"))
+            'abc'
+        """
+        return self.literal
+
 RR = RealField()
 
 RR_min_prec = RealField(MPFR_PREC_MIN)
