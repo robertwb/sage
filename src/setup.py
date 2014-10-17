@@ -101,12 +101,8 @@ class CompileRecorder(object):
         t = time.time() - t
 
         errors = failures = 0
-        if self._f is compile_command0:
-            name = "cythonize." + args[0][1].name
-            failures = int(bool(res))
-        else:
-            name = "gcc." + args[0][1].name
-            errors = int(bool(res))
+        name = "gcc." + args[0][1].name
+        errors = int(bool(res))
         if errors or failures:
             type = "failure" if failures else "error"
             failure_item = """<%(type)s/>""" % locals()
