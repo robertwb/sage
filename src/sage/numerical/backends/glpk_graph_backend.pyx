@@ -1315,7 +1315,7 @@ cdef class GLPKGraphBackend(object):
 
         return graph_sol
 
-    cpdef double cpp(self):
+    cpdef double cpp(self) except -1:
         r"""
         Solves the critical path problem of a project network.
 

@@ -39,8 +39,6 @@ Methods
 #*****************************************************************************
 include 'sage/misc/bitset.pxi'
 
-DEF BINT_EXCEPT = -2 ** 31 - 1
-
 from matroid cimport Matroid
 from set_system cimport SetSystem
 from copy import copy
@@ -255,14 +253,14 @@ cdef class BasisExchangeMatroid(Matroid):
         return frozenset(F)
 
     # this method needs to be overridden by child class
-    cdef bint __is_exchange_pair(self, long x, long y) except BINT_EXCEPT:
+    cdef bint __is_exchange_pair(self, long x, long y):
         """
         Test if current_basis-x + y is a basis
         """
         raise NotImplementedError
 
     # if this method is overridden by a child class, the child class needs to call this method
-    cdef bint __exchange(self, long x, long y) except BINT_EXCEPT:
+    cdef bint __exchange(self, long x, long y):
         """
         put current_basis <-- current_basis-x + y
         """

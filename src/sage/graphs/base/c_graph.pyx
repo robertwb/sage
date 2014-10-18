@@ -776,7 +776,7 @@ cdef class CGraph:
         """
         raise NotImplementedError()
 
-    cpdef bint has_arc(self, int u, int v) except -1:
+    cpdef bint has_arc(self, int u, int v):
         """
         Determine whether or not the given arc is in this graph.
 

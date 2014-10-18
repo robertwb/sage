@@ -566,7 +566,7 @@ cdef class SparseGraph(CGraph):
         self.check_vertex(v)
         self.add_arc_unsafe(u,v)
 
-    cdef int has_arc_unsafe(self, int u, int v):
+    cdef int has_arc_unsafe(self, int u, int v) except? -1:
         """
         Checks whether arc (u, v) is in the graph.
 
@@ -613,7 +613,7 @@ cdef class SparseGraph(CGraph):
             return False
         return self.has_arc_unsafe(u,v)
 
-    cdef int del_arc_unsafe(self, int u, int v):
+    cdef int del_arc_unsafe(self, int u, int v) except? -1:
         """
         Deletes *all* arcs from u to v.
 
@@ -936,7 +936,7 @@ cdef class SparseGraph(CGraph):
 
         return l
 
-    cdef int in_neighbors_unsafe(self, int v, int *neighbors, int size):
+    cdef int in_neighbors_unsafe(self, int v, int *neighbors, int size) except? -2:
         """
         Gives all u such that (u, v) is an arc of the graph.
 

@@ -157,7 +157,7 @@ cdef class StaticSparseCGraph(CGraph):
         """
         return range(self.g.n)
 
-    cdef int has_arc_unsafe(self, int u, int v):
+    cdef int has_arc_unsafe(self, int u, int v) except? -1:
         return ((0 <= u) and
                 (0 <= v) and
                 (u < self.g.n) and

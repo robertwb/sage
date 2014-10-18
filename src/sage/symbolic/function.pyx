@@ -1072,7 +1072,7 @@ cdef class SymbolicFunction(Function):
     # cache the hash value of this function
     # this is used very often while unpickling to see if there is already
     # a function with the same properties
-    cdef long _hash_(self) except -1:
+    cdef long _hash_(self):
         if not self.__hinit:
             # create a string representation of this SFunction
             slist = [self._nargs, self._name, str(self._latex_name),

@@ -13,11 +13,11 @@ cdef class CGraph:
     cdef int *in_degrees
     cdef int *out_degrees
 
-    cdef int add_arc_unsafe(self, int, int)
-    cdef int has_arc_unsafe(self, int, int)
-    cdef int del_arc_unsafe(self, int, int)
-    cdef int out_neighbors_unsafe(self, int, int *, int)
-    cdef int in_neighbors_unsafe(self, int, int *, int)
+    cdef int add_arc_unsafe(self, int, int) except? -1
+    cdef int has_arc_unsafe(self, int, int) except? -1
+    cdef int del_arc_unsafe(self, int, int) except? -1
+    cdef int out_neighbors_unsafe(self, int, int *, int) except? -2
+    cdef int in_neighbors_unsafe(self, int, int *, int) except? -2
 
     cdef bitset_t active_vertices
 
@@ -35,8 +35,8 @@ cdef class CGraph:
     cpdef list out_neighbors(self, int u)
     cpdef list verts(self)
     cpdef add_vertices(self, object verts)
-    cdef int del_vertex_unsafe(self, int)
     cpdef realloc(self, int)
+    cdef int del_vertex_unsafe(self, int)
     cdef int add_vertex_unsafe(self, int)
 
 cdef int get_vertex(object u, dict vertex_ints, dict vertex_labels, CGraph G) except ? -2
