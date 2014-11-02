@@ -391,7 +391,7 @@ class DocTestController(SageObject):
             sage: d = os.path.join(tmp_dir(), "test")
             sage: os.mkdir(d)
             sage: os.chmod(d, 0o777)
-            sage: DC.test_safe_directory(d)
+            sage: DC.test_safe_directory(d)     # known bug: fails to trigger in hudson
             Traceback (most recent call last):
             ...
             RuntimeError: refusing to run doctests...

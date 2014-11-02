@@ -376,12 +376,12 @@ def test_executable(args, input="", timeout=100.0, **kwds):
         sage: os.mkdir(d)
         sage: os.chmod(d, 0o777)
         sage: (out, err, ret) = test_executable(["sage", "-t", "nonexisting.py"], cwd=d)
-        sage: print err
+        sage: print err   # known bug: fails to trigger in hudson
         Traceback (most recent call last):
         ...
         RuntimeError: refusing to run doctests...
         sage: (out, err, ret) = test_executable(["sage", "-tp", "1", "nonexisting.py"], cwd=d)
-        sage: print err
+        sage: print err   # known bug: fails to trigger in hudson
         Traceback (most recent call last):
         ...
         RuntimeError: refusing to run doctests...
